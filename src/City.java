@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -67,7 +68,7 @@ public class City {
 //    long minutesDiff = Duration.between(start, end).toMinutes();
         public LocalTime localMeanTime(LocalTime inputTime, City city) {
         System.out.println(this);
-            String[] longToTheParts = longitude.split(" "); @Ex!`Q1qZWAEZ
+            String[] longToTheParts = longitude.split(" ");
             double realLongitude = Double.valueOf(longToTheParts[0]);
         LocalTime UTCtime = inputTime.minusHours(this.timeZone);
         double secondDelta = GEOGRAPHIC_SECONDS * realLongitude;
@@ -118,4 +119,23 @@ public class City {
 
     }
 
+    public static void generateAnalogClocksSvg(List<City> cities, AnalogClock clock) throws IllegalAccessException, IOException {
+        String folderName = clock.toString();
+        File folder = new File(folderName);
+        if (!folder.exists()) {
+            folder.mkdir(); // Tworzymy folder, jeśli nie istnieje
+        }
+
+        for (City city : cities) {
+            LocalTime cityTime = city.localMeanTime(LocalTime.of(12, 0), city);
+            clock.setTime(cityTime.getHour(), cityTime.getMinute(), cityTime.getSecond());
+
+            String fileName = folderName + "/" + city.getCapital() + ".svg";
+            clock.toSvg(fileName); // Wywołanie metody toSvg, która może rzucić IOException
+            System.out.println("Zapisano SVG: " + fileName);
+        }
+    }
+
 }
+
+

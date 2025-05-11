@@ -5,7 +5,7 @@ import java.util.Objects;
 import static java.util.Objects.nonNull;
 
 public abstract class Clock {
-    private LocalTime currentTime;
+    protected LocalTime currentTime;
     private City city;
     private static DateTimeFormatter time24Fomater = DateTimeFormatter.ofPattern("HH:mm:ss");
 
